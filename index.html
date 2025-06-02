@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conexão Terapêutica - Dashboard de Monetização</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .nav-button { transition: all 0.3s ease; }
+        .nav-button.active { background-color: #0d9488; color: white; }
+        .nav-button:not(.active) { background-color: #f1f5f9; color: #334155; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="min-h-screen">
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-teal-700">Conexão Terapêutica</h1>
+                        <p class="text-sm text-stone-500">Dashboard Interativo de Estratégia e Monetização</p>
+                    </div>
+                    <nav id="mainNav" class="flex space-x-2 sm:space-x-4 mt-4 sm:mt-0 rounded-lg p-1 bg-slate-100">
+                        <button data-target="visaoGeral" class="nav-button active text-sm font-semibold px-4 py-2 rounded-md">Visão Geral</button>
+                        <button data-target="pilaresReceita" class="nav-button text-sm font-semibold px-4 py-2 rounded-md">Pilares de Receita</button>
+                        <button data-target="estrategiaFuturo" class="nav-button text-sm font-semibold px-4 py-2 rounded-md">Estratégia & Futuro</button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            
+            <section id="visaoGeral" class="content-section active">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-stone-800 mb-2">Transformando Apoio em um Futuro Sustentável</h2>
+                    <p class="max-w-3xl mx-auto text-stone-600">Esta é a visão geral do nosso modelo de negócio. A "Conexão Terapêutica" nasce para ser um porto seguro para pais de crianças em equoterapia. Para garantir nossa sustentabilidade, criamos um modelo de monetização robusto. Explore abaixo nosso potencial de receita interativamente.</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-2">Simulador de Receita Recorrente</h3>
+                    <p class="text-center text-stone-500 text-sm mb-6">Ajuste o número de assinantes Premium para visualizar o potencial de faturamento.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-8">
+                        <div class="bg-teal-50 p-4 rounded-lg">
+                            <span class="text-sm text-teal-800 font-medium">Assinantes Premium</span>
+                            <p id="subscriberCount" class="text-2xl font-bold text-teal-600">5.000</p>
+                        </div>
+                        <div class="bg-teal-50 p-4 rounded-lg">
+                            <span class="text-sm text-teal-800 font-medium">Receita Mensal Estimada</span>
+                            <p id="monthlyRevenue" class="text-2xl font-bold text-teal-600">R$ 199.500</p>
+                        </div>
+                        <div class="bg-teal-50 p-4 rounded-lg">
+                            <span class="text-sm text-teal-800 font-medium">Receita Anual Estimada</span>
+                            <p id="annualRevenue" class="text-2xl font-bold text-teal-600">R$ 2.394.000</p>
+                        </div>
+                    </div>
+
+                    <div class="px-2 md:px-8 mb-8">
+                         <input id="revenueSlider" type="range" min="500" max="15000" value="5000" step="100" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pilaresReceita" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-stone-800 mb-2">Nossos Pilares de Geração de Receita</h2>
+                    <p class="max-w-3xl mx-auto text-stone-600">Nossa estratégia de monetização é diversificada e se baseia em três pilares fundamentais, desenhados para oferecer valor contínuo à nossa comunidade e garantir a saúde financeira da plataforma. Cada pilar foi construído com foco no cliente e na sustentabilidade do negócio.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col">
+                        <h3 class="text-xl font-bold text-teal-700 mb-4">Pilar 1: Assinaturas</h3>
+                        <p class="text-stone-600 mb-6 flex-grow">A base de nossa receita recorrente, oferecendo uma experiência Freemium para atrair e um plano Premium completo para fidelizar.</p>
+                        <div class="space-y-4">
+                            <div class="border border-stone-200 p-4 rounded-lg">
+                                <h4 class="font-bold">Plano Gratuito</h4>
+                                <p class="text-sm text-stone-500">Acesso limitado à comunidade e artigos básicos. Ideal para experimentar a plataforma.</p>
+                            </div>
+                            <div class="border-2 border-teal-500 bg-teal-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-teal-800">Plano Premium "Conexão Total"</h4>
+                                <p class="text-sm text-teal-700">Acesso ilimitado à comunidade, biblioteca de conteúdo, webinars, ferramentas e mais.</p>
+                                <p class="text-lg font-bold text-teal-600 mt-2">R$ 39,90/mês</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col">
+                        <h3 class="text-xl font-bold text-teal-700 mb-4">Pilar 2: Conteúdo Avulso</h3>
+                        <p class="text-stone-600 mb-6 flex-grow">Monetização de conhecimento especializado para atender demandas específicas e aprofundar temas críticos para os pais.</p>
+                        <div class="space-y-4">
+                           <div class="border border-stone-200 p-4 rounded-lg">
+                                <h4 class="font-bold">Workshops e Cursos</h4>
+                                <p class="text-sm text-stone-500">Imersões em temas como "Comunicação Alternativa" ou "Mindfulness para Pais".</p>
+                                <p class="text-md font-semibold text-stone-700 mt-2">R$ 97 a R$ 497</p>
+                           </div>
+                           <div class="border border-stone-200 p-4 rounded-lg">
+                                <h4 class="font-bold">Materiais Digitais</h4>
+                                <p class="text-sm text-stone-500">E-books, templates e planejadores terapêuticos para uso prático no dia a dia.</p>
+                                <p class="text-md font-semibold text-stone-700 mt-2">R$ 19,90 a R$ 79,90</p>
+                           </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col">
+                        <h3 class="text-xl font-bold text-teal-700 mb-4">Pilar 3: Parcerias Estratégicas</h3>
+                        <p class="text-stone-600 mb-6 flex-grow">Alianças que agregam valor à comunidade e geram receita, mantendo sempre a ética e a confiança como critérios principais.</p>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start">
+                                <span class="text-teal-500 mr-3 mt-1">&#10004;</span>
+                                <div><strong class="text-stone-700">Conteúdo Patrocinado:</strong> Artigos e vídeos informativos em parceria com marcas relevantes.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-teal-500 mr-3 mt-1">&#10004;</span>
+                                <div><strong class="text-stone-700">Programas de Afiliados:</strong> Curadoria de produtos e serviços úteis comissionada.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-teal-500 mr-3 mt-1">&#10004;</span>
+                                <div><strong class="text-stone-700">Webinars Patrocinados:</strong> Eventos temáticos com apoio de marcas que compartilham nossa missão.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="estrategiaFuturo" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-stone-800 mb-2">Estratégia, Custos e Visão de Futuro</h2>
+                    <p class="max-w-3xl mx-auto text-stone-600">O sucesso financeiro é consequência de uma estratégia bem executada, gestão eficiente de custos e uma visão clara de crescimento. Aqui detalhamos como faremos o motor de receita crescer de forma sustentável e qual o caminho que planejamos para o futuro.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-teal-700 mb-4">Estratégias de Longo Prazo</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="bg-stone-50 p-4 rounded-lg">
+                                <h4 class="font-bold mb-1">Foco no Cliente e Comunidade</h4>
+                                <p class="text-sm text-stone-600">Resolver dores reais e construir lealdade através de uma comunidade engajada e solidária.</p>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-lg">
+                                <h4 class="font-bold mb-1">Marketing Inteligente</h4>
+                                <p class="text-sm text-stone-600">Atrair o público certo com SEO, marketing de conteúdo e parcerias com especialistas da área.</p>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-lg">
+                                <h4 class="font-bold mb-1">Retenção e LTV</h4>
+                                <p class="text-sm text-stone-600">Maximizar o valor do cliente com conteúdo relevante e escuta ativa para garantir a sustentabilidade.</p>
+                            </div>
+                             <div class="bg-stone-50 p-4 rounded-lg">
+                                <h4 class="font-bold mb-1">Otimização Contínua</h4>
+                                <p class="text-sm text-stone-600">Realizar testes A/B e análises para aumentar as taxas de conversão em todas as etapas do funil.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-teal-700 mb-4 text-center">Estrutura de Custos</h3>
+                        <p class="text-center text-stone-500 text-sm mb-4">Distribuição ilustrativa dos principais custos operacionais.</p>
+                        <div class="chart-container" style="height: 250px; max-height: 250px;">
+                            <canvas id="costsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="md:col-span-2 lg:col-span-3 bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-teal-700 mb-4">Visão de Futuro e Crescimento</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+                            <div class="bg-stone-50 p-4 rounded-lg">
+                                <h4 class="font-bold mb-1">Expansão Geográfica</h4>
+                                <p class="text-sm text-stone-600">Levar a plataforma para outros mercados de língua portuguesa e, futuramente, outros idiomas.</p>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-lg">
+                                <h4 class="font-bold mb-1">Novos Públicos (B2B)</h4>
+                                <p class="text-sm text-stone-600">Criar soluções para terapeutas e centros de equoterapia, como ferramentas de gestão e educação.</p>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-lg">
+                                <h4 class="font-bold mb-1">Eventos Híbridos</h4>
+                                <p class="text-sm text-stone-600">Organizar workshops, encontros e conferências para fortalecer a comunidade e gerar receita.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center py-8 px-4">
+             <p class="text-sm text-stone-500">Ao gerar impacto positivo, a recompensa financeira será uma consequência natural.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mainNav = document.getElementById('mainNav');
+
+            let revenueChartInstance;
+            let costsChartInstance;
+
+            const formatCurrency = (value) => {
+                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            };
+            
+            const formatNumber = (value) => {
+                 return new Intl.NumberFormat('pt-BR').format(value);
+            }
+
+            function updateRevenueSimulation() {
+                const slider = document.getElementById('revenueSlider');
+                const subscriberCountEl = document.getElementById('subscriberCount');
+                const monthlyRevenueEl = document.getElementById('monthlyRevenue');
+                const annualRevenueEl = aocument.getElementById('annualRevenue');
+                
+                if (!slider) return;
+
+                const subscribers = parseInt(slider.value);
+                const pricePerSubscriber = 39.90;
+                const monthlyRevenue = subscribers * pricePerSubscriber;
+                const annualRevenue = monthlyRevenue * 12;
+
+                subscriberCountEl.textContent = formatNumber(subscribers);
+                monthlyRevenueEl.textContent = formatCurrency(monthlyRevenue);
+                annualRevenueEl.textContent = formatCurrency(annualRevenue);
+
+                if (revenueChartInstance) {
+                    const scenarios = revenueChartInstance.data.datasets[0].data;
+                    const labels = revenueChartInstance.data.labels;
+                    
+                    const newRevenue = monthlyRevenue / 1000;
+                    
+                    const activeScenarioLabel = `Atual (${formatNumber(subscribers)})`;
+
+                    if (labels.length === 4) {
+                       labels[3] = activeScenarioLabel;
+                       scenarios[3] = newRevenue;
+                    } else {
+                       labels.push(activeScenarioLabel);
+                       scenarios.push(newRevenue);
+                    }
+                    revenueChartInstance.update();
+                }
+            }
+            
+            function createRevenueChart() {
+                const ctx = document.getElementById('revenueChart')?.getContext('2d');
+                if (!ctx) return;
+                
+                const data = {
+                    labels: ['Inicial (1k)', 'Crescimento (5k)', 'Escala (10k)'],
+                    datasets: [{
+                        label: 'Receita Mensal (em milhares de R$)',
+                        data: [39.9, 199.5, 399.0],
+                        backgroundColor: [
+                            'rgba(204, 204, 204, 0.6)',
+                            'rgba(153, 204, 255, 0.6)',
+                            'rgba(13, 148, 136, 0.6)',
+                            'rgba(205, 133, 63, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgb(204, 204, 204)',
+                            'rgb(153, 204, 255)',
+                            'rgb(13, 148, 136)',
+                            'rgb(205, 133, 63)'
+                        ],
+                        borderWidth: 2
+                    }]
+                };
+
+                revenueChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) { label += ': '; }
+                                        if (context.parsed.y !== null) {
+                                            label += formatCurrency(context.parsed.y * 1000);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Receita Mensal (Milhares de R$)'
+                                }
+                            },
+                             x: {
+                                ticks: {
+                                    maxRotation: 0,
+                                    minRotation: 0
+                                }
+                            }
+                        }
+                    }
+                });
+                updateRevenueSimulation();
+            }
+            
+            function createCostsChart() {
+                const ctx = document.getElementById('costsChart')?.getContext('2d');
+                if (!ctx) return;
+
+                const data = {
+                    labels: ['Plataforma/Tech', 'Marketing (CAC)', 'Conteúdo', 'Moderação', 'Operacional'],
+                    datasets: [{
+                        label: 'Distribuição de Custos',
+                        data: [30, 25, 20, 15, 10],
+                        backgroundColor: [
+                            '#14b8a6',
+                            '#2dd4bf',
+                            '#5eead4',
+                            '#99f6e4',
+                            '#ccfbf1'
+                        ],
+                        hoverOffset: 4
+                    }]
+                };
+                
+                costsChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data,
+                    options: {
+                       responsive: true,
+                       maintainAspectRatio: false,
+                       plugins: {
+                           legend: {
+                               position: 'bottom',
+                               labels: {
+                                   padding: 15,
+                                   boxWidth: 12
+                               }
+                           },
+                           tooltip: {
+                                callbacks: {
+                                     label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) { label += ': '; }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + '%';
+                                        }
+                                        return " " + label;
+                                    }
+                                }
+                           }
+                       }
+                    }
+                });
+            }
+
+
+            function switchTab(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+
+                navButtons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.target === targetId);
+                });
+                
+                if (targetId === 'visaoGeral' && !revenueChartInstance) {
+                    createRevenueChart();
+                }
+                if (targetId === 'estrategiaFuturo' && !costsChartInstance) {
+                    createCostsChart();
+                }
+            }
+
+            mainNav.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    switchTab(e.target.dataset.target);
+                }
+            });
+
+            const revenueSlider = document.getElementById('revenueSlider');
+            if (revenueSlider) {
+                revenueSlider.addEventListener('input', updateRevenueSimulation);
+            }
+            
+            switchTab('visaoGeral');
+        });
+    </script>
+</body>
+</html>
